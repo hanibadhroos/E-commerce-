@@ -1,0 +1,121 @@
+header{
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    padding: 0px;
+}
+.header-actions{
+    display: flex;
+    justify-content: space-between;
+    background-color: #DDD;
+    padding: 5px;
+
+}
+.header-actions .search-bar{
+    text-align: right;
+    width: 50%;
+}
+
+.header-actions .search-bar input{
+    margin-right: 8px;
+    height: 40px;
+    border-radius: 9px;
+}
+.header-actions button{
+    margin-right:5px ;
+    background-color: green;
+}
+
+.nav{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.nav ul{
+    list-style-type: none;
+    display: flex;
+}
+
+.nav ul li{
+    margin: 9px;
+}
+nav ul li a{
+    color: black;
+}
+
+.nav span h3{
+    text-align: left    ;
+}
+
+.category-select{
+    width: 250px;
+    height: 30px;
+    border-radius: 9px;
+    margin: 9px;
+    position: absolute;
+    right: 4px;
+    font-family: cursive;
+    font-size: 15px;
+
+}
+
+.products-container{
+    width: 60%;
+    padding: 10px;
+
+}
+
+.featured-products{
+    width: 40%;
+    position: relative;
+    top: 50px;
+    background-color: #211f1f00;
+    border-radius: 9px;
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+.featured-products ul{
+    list-style-type: none;
+}
+
+.product-img:hover{
+  filter: drop-shadow(10px 10px 5px black) !important;
+  transition: filter 0.3s ease;
+  transform: scaleX(1.4);
+  
+}
+
+.featured-products ul li div{
+    display: flex;
+}
+
+.featured-products ul li div i{
+    height: fit-content;
+    border-radius: 9px;
+    width: 9%;
+}
+
+.favorited{
+    background-color: green;
+    color: red;
+}
+
+.content{
+    display: flex;
+}
+ 
+@media (min-width: 100px) and (max-width: 640px){
+    .content{
+        flex-direction: column;
+    }
+}
+
+
+@media (min-width: 641px){
+    .content{
+        flex-direction: row;
+    }
+}
