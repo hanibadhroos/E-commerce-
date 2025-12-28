@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFavorites } from '../context/FavoritesContext';
-
+import { useCart } from '../context/CartContext';
+import { useSearch } from '../context/SearchContext';
 export default function Header() {
   
   const {favoritesCount} = useFavorites();
 
+  const {getTotalItems} = useCart();
+
   const [isOpen, setIsOpen] = useState(false);
+
+  const {query, setQuery} = useSearch();
+
+
+
 
   const toggleMenue = ()=> setIsOpen(!isOpen);
 
@@ -19,19 +27,20 @@ export default function Header() {
         </button>
 
         <div className='search-bar'>
-          <input type="search" placeholder='search'/> 
-          <button>
+          <input type="search" placeholder='search' value={query} onChange={(e)=>{setQuery(e.target.value)}}/> 
+          {/* <button>
             <i className='fa-solid fa-search'></i>
-          </button>
+          </button> */}
         </div>
 
 
         <div className='icons-group'>
-          <button>
-            <Link to="/cart" style={{ color: 'white', textDecoration: 'none', position: 'relative' }}>
-              Cart
-            </Link>
-          </button>
+          <Link to="/cart" style={{ color: 'white', textDecoration: 'none', position: 'relative' }}>
+            <button>
+                Cart
+            </button>
+            <i className="cart-count">{getTotalItems()}</i>
+          </Link>
 
           <Link to="/favorites">
             <button>

@@ -11,6 +11,8 @@ import { CartProvider } from './context/CartContext'
 import Cart from './Pages/Cart'
 import { FavoriteProvider } from './context/FavoritesContext'
 import Favorites from './Pages/Favorites'
+import { SearchProvider } from './context/SearchContext'
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,7 +29,9 @@ export default function App(){
   return(
     <CartProvider>
       <FavoriteProvider>
-        <RouterProvider router={router}/>
+        <SearchProvider>
+          <RouterProvider router={router}/>
+        </SearchProvider>
       </FavoriteProvider>
     </CartProvider>
   )

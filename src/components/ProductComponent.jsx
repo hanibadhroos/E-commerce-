@@ -34,7 +34,7 @@ export default function ProductComponent({product}){
         <div 
             key={product.id} 
             style={{
-                backgroundColor: 'rgb(44 44 44 / 0%)',
+                backgroundColor: '#b3b3d845',
                 WebkitBackdropFilter: 'blur(10px)',
                 padding: '20px',
                 borderRadius: '10px',
@@ -42,7 +42,8 @@ export default function ProductComponent({product}){
                 transition: 'transform 0.3s',
                 cursor: 'pointer',
                 color: 'white',
-                border: '1px solid rgba(255, 255, 255, 0.1)'
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                marginBottom:'10px'
             }}
             onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-5px)';

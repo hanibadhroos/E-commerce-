@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProductComponent from "../components/ProductComponent";
 import { Link } from "react-router-dom";
-
+import { useSearch } from "../context/SearchContext";
 export default function Home(){
 
     const [products, setProducts] = useState([]);
@@ -11,6 +11,7 @@ export default function Home(){
     const [error, setError] = useState(null);
     const [categories, setCategories] = useState([]);
 
+    const {query} = useSearch();
 
     ////Get categories
     useEffect( ()=>{
@@ -29,17 +30,18 @@ export default function Home(){
 
     ////Get products
     useEffect(()=>{
-        const fetchProducts = async (category = "all")=>{
+        const fetchProducts = async ()=>{
             setLoading(true);
             setError(null);
             try{
                 let apiUrl = "https://fakestoreapi.com/products";
 
-                if(category !== "all"){
-                    apiUrl = `https://fakestoreapi.com/products/category/${category}`;
+                if(selectedCategory !== "all"){
+                    apiUrl = `https://fakestoreapi.com/products/category/${selectedCategory}`;
                 }
 
                 const response = await axios.get(apiUrl);
+                
                 setProducts(response.data);
             }
             catch(e){
@@ -54,6 +56,7 @@ export default function Home(){
         fetchProducts();
     },[selectedCategory])
 
+
     const categoriesList = categories.map((c)=>{
         return (<option key={c} value={c} > 
                     {c}
@@ -61,18 +64,16 @@ export default function Home(){
         
     })
 
-    const featuredProducts = [...products];
-    featuredProducts.sort((a, b)=>b.rating.rate - a.rating.rate);
 
+    const filteredProducts = products.filter((product)=>
+        product.title.toLowerCase().includes(query.toLowerCase())
+    )
 
-    function getProductDetails(e){
-        
-    }
-
+    const featuredProducts = [...filteredProducts].sort((a, b) => b.rating.rate - a.rating.rate);
 
     return(
         <div style={{backgroundColor:'#000000ab', minHeight:'100vh'}}>
-            <select name="" id="" className="category-select" onChange={(e)=>{getProductDetails(e)}}>
+            <select name="" id="" className="category-select" onChange={(e)=> setSelectedCategory(e.target.value)}>
                 {categoriesList}
             </select>
             
@@ -94,8 +95,8 @@ export default function Home(){
             <div style={{display:'flex'}} className="content">
                 {/* Products  */}
                 <div className="products-container">
-                {products.length > 0 ? (
-                products.map((product) => (
+                {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
                         <Link key={product.id} to={`product/${product.id}`} style={{textDecoration:'none',}}>
                             <ProductComponent product={product}/>
                         </Link>
@@ -116,29 +117,34 @@ export default function Home(){
 
                 {/* Featured products */}
                 <div className="featured-products">
-                    <h2 style={{color:'white'}}>Most Rating</h2>
-                    <hr />
-                    <ul>
-                        {featuredProducts.length > 0? (
-                            featuredProducts.map((p)=>{
-                                return(
-                                    <li key={p.id} style={{color:'white'}}>
-                                        <img 
-                                            className="product-img" src={p.image} alt={p.title} style={{width:'60px', height:'60px', }} 
-                                        />
-                                        <br />
-                                        <div>
-                                            <b style={{width:'90%'}}>{p.title}</b> 
-                                            <i>⭐{p.rating.rate}</i>
-                                        </div>
-                                        <hr />
-                                    </li>
-                                )
-                            })
-                        ) : <div></div>
-
-                        }
-                    </ul>
+                    {!loading && !error? (
+                            <>
+                            <h2 style={{color:'white'}}>Most Rating</h2>
+                            <hr />
+                            <ul>
+                                {featuredProducts.length > 0? (
+                                    featuredProducts.map((p)=>{
+                                        return(
+                                            <li key={p.id} style={{color:'white'}}>
+                                                <img 
+                                                    className="product-img" src={p.image} alt={p.title} style={{width:'60px', height:'60px', }} 
+                                                />
+                                                <br />
+                                                <div>
+                                                    <b style={{width:'90%'}}>{p.title}</b> 
+                                                    <i>⭐{p.rating.rate}</i>
+                                                </div>
+                                                <hr />
+                                            </li>
+                                        )
+                                    })
+                                ) : <div></div>
+        
+                                }
+                            </ul>
+                            </>
+                        ) : (<div></div>)
+                    }
                 </div>
             </div>
         </div>

@@ -113,12 +113,21 @@ nav ul li a{
     color: red;
     position: relative;
     bottom: -13px;
-    right: 11px;
+    right: 20px;
     background: #000000a3;
-    padding: 3px 8px;
+    padding: 1px 8px;
     border-radius: 16px;
 }
 
+.cart-count{
+    color: red;
+    position: relative;
+    bottom: -13px;
+    right: 20px;
+    background: #000000a3;
+    padding: 1px 8px;
+    border-radius: 16px;
+}
 
 .menu-toggle {
     display: none; /* مخفي في الشاشات الكبيرة */
