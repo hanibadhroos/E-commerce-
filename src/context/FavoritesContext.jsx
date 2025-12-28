@@ -10,21 +10,17 @@ export const useFavorites = ()=>{
 
 export const FavoriteProvider = ({children}) => {
 
-    const [favorites, setFavorites] = useState([]);
-
-    /////Get Favorite products.
-    useEffect(()=>{
+    const [favorites, setFavorites] = useState(()=>{
         const storedFavorites = localStorage.getItem('favorites');
-        if (storedFavorites) {
-            try {
-                setFavorites(JSON.parse(storedFavorites));
-            } catch (error) {
-                console.error("Error parsing favorites from localStorage:", error);
-                setFavorites([]);
-            }
-        }
-    },[]);
 
+        try{
+            return storedFavorites? JSON.parse(storedFavorites) : [];
+        }
+        catch(error){
+            console.error("Error parsing favorites:", error);
+            return [];
+        }
+    });
 
     ////Set and add new product to favorites.
     useEffect(()=>{
@@ -71,7 +67,8 @@ export const FavoriteProvider = ({children}) => {
         addToFavorites,
         removeFromFavorites,
         toggleFavorite,
-        isFavorite
+        isFavorite,
+        favoritesCount: favorites.length,
     };
 
 

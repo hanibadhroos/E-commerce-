@@ -3,11 +3,12 @@ header{
     flex-direction: column;
     height: 100px;
     padding: 0px;
+    background-color: teal;
+    margin-bottom: 10px;
 }
 .header-actions{
     display: flex;
     justify-content: space-between;
-    background-color: #DDD;
     padding: 5px;
 
 }
@@ -105,8 +106,43 @@ nav ul li a{
 
 .content{
     display: flex;
+    background-color: #00808078;
 }
- 
+
+.favorites-count{
+    color: red;
+    position: relative;
+    bottom: -13px;
+    right: 11px;
+    background: #000000a3;
+    padding: 3px 8px;
+    border-radius: 16px;
+}
+
+
+.menu-toggle {
+    display: none; /* مخفي في الشاشات الكبيرة */
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    
+}
+.hidden, .show, .menu-toggle{
+    display: none;
+}
+
+.nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+
+
+
 @media (min-width: 100px) and (max-width: 640px){
     .content{
         flex-direction: column;
@@ -119,3 +155,98 @@ nav ul li a{
         flex-direction: row;
     }
 }
+
+
+@media (max-width: 600px){
+    .menu-toggle {
+        display: block;
+        height: 45px;
+        display: flex;
+        align-items: center;
+    }
+
+    .icons-group{
+        display: none;
+    }
+    
+    .mobile-menu{
+        background-color: #00000096;
+        color: wheat;
+        z-index: 999;
+        animation: slidDown 2s ease-in-out 0s;
+    } 
+    
+    .mobile-menu ul{
+        list-style-type: none;
+        color: white !important;
+    }
+    .mobile-menu ul li{
+        margin: 8px;
+    }
+    .mobile-menu ul li a{
+        color: white !important;
+    }
+
+    .hidden{
+        /* z-index: 0; */
+        display: none;
+    }
+    .show{
+        display: block;
+    }
+
+    @keyframes slidDown {
+        from{
+            transform: translateY(0%);
+        }
+        to{
+            transform: translateY(-100%);
+        }
+    }
+
+    .search-bar{
+        display: flex;
+    }
+
+    .search-bar input{
+        width:-webkit-fill-available;
+    }
+
+    .header-actions{
+        justify-content: left;
+        align-items: center;
+    }
+
+    .nav{
+        display: none; /* إخفاء القائمة افتراضياً */
+        position: absolute;
+        top: 100%; /* تظهر أسفل الهيدر مباشرة */
+        left: 0;
+        width: 100%;
+        background-color: #000;
+        padding: 20px;
+        flex-direction: column;
+        z-index: 1000;
+    }
+
+    .nav.active {
+        display: flex; /* تظهر القائمة عند النقر على الزر */
+    }
+
+    .nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .search-bar {
+        width: 50%; /* تصغير شريط البحث ليناسب المساحة */
+    }
+}
+
+@media (min-width: 601px){
+    .nav{
+        display: flex;
+    }
+}
+
