@@ -13,8 +13,8 @@ header{
 
 }
 .header-actions .search-bar{
-    text-align: right;
-    width: 50%;
+    text-align: left;
+    width: 250px;
 }
 
 .header-actions .search-bar input{
@@ -63,22 +63,25 @@ nav ul li a{
 }
 
 .products-container{
-    width: 60%;
+    /* width: 80%; */
     padding: 10px;
 
+    display: grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
 }
 
-.featured-products{
-    width: 40%;
+.categories{
+    width: 20%;
     position: relative;
     top: 50px;
-    background-color: #211f1f00;
+    background-color: #DDD;
     border-radius: 9px;
-    height: 50vh;
-    overflow-y: scroll;
+    height: max-content;
 }
 
-.featured-products ul{
+.categories ul{
     list-style-type: none;
 }
 
@@ -89,11 +92,29 @@ nav ul li a{
   
 }
 
-.featured-products ul li div{
+.fliters{
+    height: 62px;
+    align-items: center;
+    color: #1a111170;
+    font-family: 'FontAwesome';
+    width: 90%;
+    margin: 9px auto;
+    background-color: #EEE;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.fliters div:hover{
+    color: #000;
+}
+
+.categories ul li div{
     display: flex;
 }
 
-.featured-products ul li div i{
+.categories ul li div i{
     height: fit-content;
     border-radius: 9px;
     width: 9%;
@@ -106,7 +127,7 @@ nav ul li a{
 
 .content{
     display: flex;
-    background-color: #00808078;
+    background-color: teal;
 }
 
 .favorites-count{
@@ -121,9 +142,9 @@ nav ul li a{
 
 .cart-count{
     color: red;
-    position: relative;
-    bottom: -13px;
-    right: 20px;
+    position: absolute;
+    bottom: -24px;
+    right: 45px;
     background: #000000a3;
     padding: 1px 8px;
     border-radius: 16px;
@@ -150,11 +171,49 @@ nav ul li a{
 }
 
 
+@media (max-width: 992px) {
+    .products-container {
+        grid-template-columns: repeat(2, 1fr); /* صفين في الشاشات المتوسطة */
+    }
+}
 
+@media (max-width: 700px) {
+    .products-container {
+        grid-template-columns: 1fr; /* صف واحد في الجوال */
+    }
+
+    .products-container div
+    {
+        width: 80%;
+    }
+}
 
 @media (min-width: 100px) and (max-width: 640px){
-    .content{
+
+
+    .products-container {
+        grid-template-columns: repeat(1, 1fr); /* صفين في الشاشات المتوسطة */
+    }
+
+    .products-container a{
+        width: 100%;
+    }
+    
+    /* .content{
         flex-direction: column;
+    } */
+
+    .product-component{
+        width: 100%;
+        margin: auto;
+    }
+
+
+
+    .actions{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
     }
 }
 
@@ -213,6 +272,7 @@ nav ul li a{
         }
     }
 
+
     .search-bar{
         display: flex;
     }
@@ -249,7 +309,7 @@ nav ul li a{
     }
 
     .search-bar {
-        width: 50%; /* تصغير شريط البحث ليناسب المساحة */
+        width: 250px; /* تصغير شريط البحث ليناسب المساحة */
     }
 }
 

@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import ProductComponent from "../components/ProductComponent";
 import { Link } from "react-router-dom";
 import { useSearch } from "../context/SearchContext";
+import { useTranslation } from "react-i18next";
 export default function Home(){
+
+    const {t, i18n} = useTranslation();
 
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("all");
@@ -72,11 +75,13 @@ export default function Home(){
     const featuredProducts = [...filteredProducts].sort((a, b) => b.rating.rate - a.rating.rate);
 
     return(
-        <div style={{backgroundColor:'#000000ab', minHeight:'100vh'}}>
-            <select name="" id="" className="category-select" onChange={(e)=> setSelectedCategory(e.target.value)}>
-                {categoriesList}
-            </select>
-            
+        <div style={{ minHeight:'100vh'}}>
+            <div className="row fliters">
+                <div >{t("all")}</div>
+                <div >{t('top_rated')}</div>
+                <div >{t('top_demand')}</div>
+                <div >{t("might_interest_you")}</div>
+            </div>
 
             {loading && (
                 <div style={{ textAlign: 'center', margin: '20px' }}>
@@ -94,12 +99,10 @@ export default function Home(){
 
             <div style={{display:'flex'}} className="content">
                 {/* Products  */}
-                <div className="products-container">
+                <div className="products-container row w-100">
                 {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
-                        <Link key={product.id} to={`product/${product.id}`} style={{textDecoration:'none',}}>
-                            <ProductComponent product={product}/>
-                        </Link>
+                        <ProductComponent key={product.id} product={product}/>
                     ))
                 ) : (
                 !loading && !error && (
@@ -116,34 +119,20 @@ export default function Home(){
                 </div>
 
                 {/* Featured products */}
-                <div className="featured-products">
+                <div className="categories m-2">
                     {!loading && !error? (
-                            <>
-                            <h2 style={{color:'white'}}>Most Rating</h2>
-                            <hr />
-                            <ul>
-                                {featuredProducts.length > 0? (
-                                    featuredProducts.map((p)=>{
-                                        return(
-                                            <li key={p.id} style={{color:'white'}}>
-                                                <img 
-                                                    className="product-img" src={p.image} alt={p.title} style={{width:'60px', height:'60px', }} 
-                                                />
-                                                <br />
-                                                <div>
-                                                    <b style={{width:'90%'}}>{p.title}</b> 
-                                                    <i>⭐{p.rating.rate}</i>
-                                                </div>
-                                                <hr />
-                                            </li>
-                                        )
-                                    })
-                                ) : <div></div>
-        
-                                }
-                            </ul>
-                            </>
-                        ) : (<div></div>)
+                            <div>
+                                <ul>
+                                    <li>جوالات سامسونج</li>
+                                    <li>جوالات ايفون</li>
+                                    <li>ساعات رقمية</li>
+                                </ul>
+                            </div>
+                        ) : (
+                            <div>
+                                Loading...
+                            </div>
+                        )
                     }
                 </div>
             </div>

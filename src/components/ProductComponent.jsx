@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
+import { Link } from "react-router-dom";
 
 
 export default function ProductComponent({product}){
@@ -32,6 +33,7 @@ export default function ProductComponent({product}){
 
     return(
         <div 
+            className="product-component"
             key={product.id} 
             style={{
                 backgroundColor: '#b3b3d845',
@@ -60,34 +62,36 @@ export default function ProductComponent({product}){
                 borderRadius: '8px',
                 marginBottom: '15px'
             }}>
-            <img 
-            className="product-img"
-            src={product.image} 
-            alt={product.title} 
-            style={{ 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'contain',
-                backgroundColor: 'white'
-            }}
-            />
-        </div>
-        <h3 style={{ 
-            fontSize: '16px', 
-            marginBottom: '10px',
-            height: '40px',
-            overflow: 'hidden'
-        }}>
+                <Link key={product.id} to={`product/${product.id}`} style={{textDecoration:'none',}}>
+
+                    <img 
+                        className="product-img"
+                        src={product.image} 
+                        alt={product.title} 
+                        style={{ 
+                            width: '100%', 
+                            height: '100%', 
+                            objectFit: 'contain',
+                        }}
+                     />
+                </Link>
+            </div>
+            <h3 style={{ 
+                fontSize: '16px', 
+                marginBottom: '10px',
+                height: '40px',
+                overflow: 'hidden'
+            }}>
             {product.title}
-        </h3>
-        <p style={{ 
-            fontSize: '20px', 
-            color: '#4CAF50', 
-            fontWeight: 'bold',
-            marginBottom: '10px'
-        }}>
-            ${product.price}
-        </p>
+            </h3>
+            <p style={{ 
+                fontSize: '20px', 
+                color: '#4CAF50', 
+                fontWeight: 'bold',
+                marginBottom: '10px'
+            }}>
+                ${product.price}
+            </p>
         <div style={{ 
             display: 'flex', 
             alignItems: 'center',
@@ -109,7 +113,7 @@ export default function ProductComponent({product}){
             </span>
         </div>
 
-        <div className="actions" style={{width:'300px',display:'flex', justifyContent:'space-around'}}>
+        <div className="actions" style={{display:'flex', justifyContent:'space-around'}}>
             <button 
                 style={{
                 backgroundColor: '#4CAF50',
@@ -127,7 +131,7 @@ export default function ProductComponent({product}){
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
                 onClick={handleAddToCart}
             >
-                Add to Cart
+                <i className="fas fa-cart-plus"></i>
             </button>
 
             <button onClick={handleToggleFavorite}><i className="fa-solid fa-heart" style={{color: favorite? 'red' : 'black'}}></i></button>
