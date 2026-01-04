@@ -22,7 +22,7 @@ export default function Favorites(){
                                 </div>
 
                                 <div className="actions">
-                                    <button className="btn btn-success" onClick={()=>addToCart(item, 1)}>Add to cart</button>
+                                    <button className="btn btn-success" onClick={()=>addToCart(item, 1)}><i className="fas fa-cart-plus"></i></button>
                                     <button className="btn btn-secondary m-2" onClick={()=>removeFromFavorites(item.id)}><i className={'fa-solid fa-heart'} style={{color:'red'}}></i></button>
                                 </div>
                             </div>

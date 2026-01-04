@@ -32,7 +32,7 @@ export default function Header() {
         </button>
 
         <div className='search-bar'>
-          <input type="search" placeholder='search' value={query} onChange={(e)=>{setQuery(e.target.value)}}/> 
+          <input type="search" placeholder={t("search")} value={query} onChange={(e)=>{setQuery(e.target.value)}}/> 
         </div>
 
 
@@ -47,24 +47,25 @@ export default function Header() {
           </select>
 
           <select name="" id="" className='btn btn-info m-2' style={{width:'40px'}}>
-            <option value="">تسجيل الدخول</option>
-            <option value="">طلباتي</option>
+            <option value="">{t("login")}</option>
+            <option value="">{t("my_orders")}</option>
           </select>
 
 
-          <Link to="/cart" style={{ color: 'white', textDecoration: 'none', position: 'relative' }}>
+          <Link to="/cart" className="icon-wrapper">
             <button>
-                <i className='fas fa-shopping-cart'></i>
+              <i className='fas fa-shopping-cart'></i>
             </button>
-            <i className="cart-count">{getTotalItems()}</i>
+            <span className="cart-count">{getTotalItems()}</span>
           </Link>
 
-          <Link to="/favorites">
+          <Link to="/favorites" className="icon-wrapper">
             <button>
               <i className='fa-solid fa-heart' style={{color:'red'}}></i>
-              <i className="favorites-count">{favoritesCount}</i>
             </button>
+            <span className="favorites-count">{favoritesCount}</span>
           </Link>
+          
         </div>        
 
       </div>
@@ -72,7 +73,7 @@ export default function Header() {
       <nav className={`nav ${isOpen ? 'active' : ''}`}>
         <span style={{width:'40%', color:'black'}}>
           <Link to="/" style={{color:'black'}}>
-            <h3>Hani Store</h3>
+            <h3 style={{textAlign: i18n.language=="en"? "left": "right"}}>Hani Store</h3>
           </Link>
         </span> 
         <ul onClick={() => setIsOpen(false)}>

@@ -5,5 +5,26 @@
     "all":"All",
     "top_saling": "Top Saling",
     "top_demand":"Top Deman",
-    "might_interest_you":"Might Interest You"
+    "might_interest_you":"Might Interest You",
+    "remove":"Remove",
+    "clear_cart":"Clear Cart",
+    "continoue_to_shop":"Continoue to shop",
+    "shopping_cart":"Shopping Cart",
+    "items":"items",
+    "order_summary":"Order Summary",
+    "subtotal":"Subtotal",
+    "total":"Total",
+    "proceed_to_checkout":"Proceed to checkout",
+    "search":"Search",
+    "shopping":"Shopping",
+    "free":"Free",
+    "tax":"Tax",
+    "quantity":"Quantity",
+    "reviews":"reviews",
+    "description":"Description",
+    "category":"Category",
+    "buy_now":"Buy Now"
+
+
+
 }

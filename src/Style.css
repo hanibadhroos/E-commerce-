@@ -130,7 +130,7 @@ nav ul li a{
     background-color: teal;
 }
 
-.favorites-count{
+/* .favorites-count{
     color: red;
     position: relative;
     bottom: -13px;
@@ -142,13 +142,45 @@ nav ul li a{
 
 .cart-count{
     color: red;
-    position: absolute;
-    bottom: -24px;
-    right: 45px;
+    position: relative;
+    bottom: -13px;
+    right: 20px;
     background: #000000a3;
     padding: 1px 8px;
     border-radius: 16px;
+} */
+
+.icon-wrapper {
+    position: relative;
+    display: inline-block;
 }
+
+/* الشكل العام للعداد */
+.cart-count,
+.favorites-count {
+    position: absolute;
+    bottom: -6px;
+    background: #000000a3;
+    color: red;
+    padding: 1px 7px;
+    border-radius: 50%;
+    font-size: 12px;
+    z-index: 999;
+}
+
+/* 🔹 إنجليزي (LTR) → الركن الأيمن السفلي */
+html[dir="ltr"] .cart-count,
+html[dir="ltr"] .favorites-count {
+    right: -6px;
+}
+
+/* 🔹 عربي (RTL) → الركن الأيسر السفلي */
+html[dir="rtl"] .cart-count,
+html[dir="rtl"] .favorites-count {
+    left: -6px;
+}
+
+
 
 .menu-toggle {
     display: none; /* مخفي في الشاشات الكبيرة */

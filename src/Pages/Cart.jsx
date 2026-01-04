@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 export default function Cart(){
 
 
@@ -12,6 +13,9 @@ export default function Cart(){
         getTotalPrice, 
         getTotalItems 
     } = useCart();
+
+
+    const {t, i18n} = useTranslation();
 
     if (cartItems.length === 0) {
         return (
@@ -78,7 +82,7 @@ export default function Cart(){
                       </div>
                       
                       <div>
-                        <label>Quantity: </label>
+                        <label>{t("quantity")}: </label>
                         <input 
                           type="number" 
                           min="1" 
@@ -93,7 +97,7 @@ export default function Cart(){
                       </div>
                       
                       <div>
-                        <strong>Total: ${(item.price * item.quantity).toFixed(2)}</strong>
+                        <strong>{t("total")}: ${(item.price * item.quantity).toFixed(2)}</strong>
                       </div>
                     </div>
                   </div>
@@ -110,7 +114,8 @@ export default function Cart(){
                       marginLeft: '20px'
                     }}
                   >
-                    Remove
+                    {t("remove")}
+                    {/* {t("all")} */}
                   </button>
                 </div>
               ))}
@@ -124,28 +129,28 @@ export default function Cart(){
                 borderRadius: '8px',
                 boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
               }}>
-                <h2>Order Summary</h2>
+                <h2>{t("order_summary")}</h2>
                 
                 <div style={{ margin: '20px 0' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <span>Subtotal ({getTotalItems()} items)</span>
+                    <span>{t("subtotal")} ({getTotalItems()} {t("items")})</span>
                     <span>${getTotalPrice().toFixed(2)}</span>
                   </div>
                   
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <span>Shipping</span>
-                    <span>Free</span>
+                    <span>{t("shopping")}</span>
+                    <span>{t("free")}</span>
                   </div>
                   
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <span>Tax</span>
+                    <span>{t("tax")}</span>
                     <span>${(getTotalPrice() * 0.1).toFixed(2)}</span>
                   </div>
                   
                   <hr style={{ margin: '20px 0' }} />
                   
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '18px' }}>
-                    <span>Total</span>
+                    <span>{t("total")}</span>
                     <span>${(getTotalPrice() * 1.1).toFixed(2)}</span>
                   </div>
                 </div>
@@ -164,7 +169,7 @@ export default function Cart(){
                     marginBottom: '10px'
                   }}
                 >
-                  Proceed to Checkout
+                  {t("proceed_to_checkout")}
                 </button>
                 
                 <button 
@@ -179,7 +184,7 @@ export default function Cart(){
                     cursor: 'pointer'
                   }}
                 >
-                  Clear Cart
+                  {t("clear_cart")}
                 </button>
                 
                 <Link to="/" style={{
@@ -189,7 +194,7 @@ export default function Cart(){
                   color: '#2196F3',
                   textDecoration: 'none'
                 }}>
-                  Continue Shopping
+                  {t("continoue_to_shop")}
                 </Link>
               </div>
             </div>

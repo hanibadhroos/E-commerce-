@@ -5,5 +5,24 @@
     "all":"الكل",
     "top_saling": "الاكثر مبيعا",
     "top_demand":"الاكثر رواجا",
-    "might_interest_you":"قد تعجبك"
+    "might_interest_you":"قد تعجبك",
+    "remove":"حذف",
+    "clear_cart":"تنظيف السلة",
+    "continoue_to_shop":"الاستمرار في التسوق",
+    "shopping_cart":"سلة التسوق",
+    "items":"العناصر",
+    "order_summary":"ملخص الطلب",
+    "subtotal":"المجموع الفرعي",
+    "total":"الاجمالي",
+    "proceed_to_checkout":"اتمام الشراء",
+    "search":"بحث",
+    "shopping":"التسوق",
+    "free":"مجانا",
+    "tax":"الضريبة",
+    "quantity":"الكمية",
+    "reviews":"المراجعات",
+    "description":"الوصف",
+    "category":"الصنف",
+    "buy_now":"شراء الان"
+
 }

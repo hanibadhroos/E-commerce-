@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 export default function ProductDetails(){
@@ -9,6 +10,7 @@ export default function ProductDetails(){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const {t, i18n} =useTranslation();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -102,7 +104,7 @@ export default function ProductDetails(){
                                 <span style={{ marginRight: '5px' }}>⭐</span>
                                 <span>{product.rating?.rate || 'N/A'}</span>
                                 <span style={{ marginLeft: '5px', fontSize: '12px' }}>
-                                    ({product.rating?.count || 0} reviews)
+                                    ({product.rating?.count || 0} {t("reviews")})
                                 </span>
                             </div>
                         </div>
@@ -113,14 +115,14 @@ export default function ProductDetails(){
                             borderRadius: '5px',
                             marginBottom: '20px'
                         }}>
-                            <h3 style={{ marginBottom: '10px' }}>Description</h3>
+                            <h3 style={{ marginBottom: '10px' }}>{t("description")}</h3>
                             <p style={{ lineHeight: '1.6', color: '#666' }}>
                                 {product.description}
                             </p>
                         </div>
                         
                         <div style={{ marginBottom: '20px' }}>
-                            <h3 style={{ marginBottom: '10px' }}>Category</h3>
+                            <h3 style={{ marginBottom: '10px' }}>{t('category')}</h3>
                             <span style={{
                                 backgroundColor: '#e0e0e0',
                                 padding: '5px 15px',
@@ -143,7 +145,7 @@ export default function ProductDetails(){
                                 cursor: 'pointer',
                                 flex: '1'
                             }}>
-                                Add to Cart
+                                <i className="fas fa-cart-plus"></i>
                             </button>
                             
                             <button style={{
@@ -157,7 +159,7 @@ export default function ProductDetails(){
                                 cursor: 'pointer',
                                 flex: '1'
                             }}>
-                                Buy Now
+                                {t("buy_now")}
                             </button>
                         </div>
                     </div>
