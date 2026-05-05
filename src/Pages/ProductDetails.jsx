@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import api from "../api/axios";
+import { useCart } from "../context/CartContext";
+import { useToast } from "../context/ToastContext";
 
 export default function ProductDetails(){
     const { id } = useParams(); // ملاحظة: الرابط هو /product/:id وليس productId
@@ -12,12 +15,17 @@ export default function ProductDetails(){
 
     const {t, i18n} =useTranslation();
 
+    const {addToCart} = useCart();
+    const {showToast} = useToast();
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
                 // استخدم المعلمة id من useParams
-                const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
+                // const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
+                const response = await api.get(`api/products/${id}`);
+                console.log(response);
                 setProduct(response.data);
             } catch (err) {
                 setError(err.message);
@@ -32,6 +40,12 @@ export default function ProductDetails(){
         }
     }, [id]); 
 
+    const handleAddToCart = (e, variant)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart(variant.product, variant);
+        showToast(t('added_to_cart'));
+    }
 
     if (loading) {
         return <div>Loading product details...</div>;
@@ -72,9 +86,6 @@ export default function ProductDetails(){
                     
                     {/* تفاصيل المنتج */}
                     <div style={{ flex: '2', minWidth: '300px' }}>
-                        <h1 style={{ marginBottom: '20px', color: '#333' }}>
-                            {product.title}
-                        </h1>
                         
                         <div style={{ 
                             display: 'flex', 
@@ -90,7 +101,7 @@ export default function ProductDetails(){
                                 fontSize: '20px',
                                 fontWeight: 'bold'
                             }}>
-                                ${product.price}
+                                ${product.sale_price}
                             </div>
                             
                             <div style={{ 
@@ -115,21 +126,21 @@ export default function ProductDetails(){
                             borderRadius: '5px',
                             marginBottom: '20px'
                         }}>
-                            <h3 style={{ marginBottom: '10px' }}>{t("description")}</h3>
+                            <h3 style={{ marginBottom: '10px' }}>{t("product_name")}</h3>
                             <p style={{ lineHeight: '1.6', color: '#666' }}>
-                                {product.description}
+                                {product.product.ar_name}
                             </p>
                         </div>
                         
                         <div style={{ marginBottom: '20px' }}>
-                            <h3 style={{ marginBottom: '10px' }}>{t('category')}</h3>
+                            <h3 style={{ marginBottom: '10px' }}>{t('attributes')}</h3>
                             <span style={{
                                 backgroundColor: '#e0e0e0',
                                 padding: '5px 15px',
                                 borderRadius: '20px',
                                 fontSize: '14px'
                             }}>
-                                {product.category}
+                                {product.attributes}
                             </span>
                         </div>
                         
@@ -144,11 +155,13 @@ export default function ProductDetails(){
                                 fontWeight: 'bold',
                                 cursor: 'pointer',
                                 flex: '1'
-                            }}>
+                            }}
+                                onClick={(e)=> handleAddToCart(e, product)}
+                            >
                                 <i className="fas fa-cart-plus"></i>
                             </button>
                             
-                            <button style={{
+                            <Link style={{
                                 backgroundColor: '#2196F3',
                                 color: 'white',
                                 border: 'none',
@@ -158,9 +171,11 @@ export default function ProductDetails(){
                                 fontWeight: 'bold',
                                 cursor: 'pointer',
                                 flex: '1'
-                            }}>
+                            }}
+                            to={'/payment'}
+                            >
                                 {t("buy_now")}
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

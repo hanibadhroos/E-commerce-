@@ -26,37 +26,51 @@ export const CartProvider = ({ children }) => {
     }, [cartItems]);
 
     // إضافة منتج إلى السلة
-    const addToCart = (product, quantity = 1) => {
+    const addToCart = (product, variant, quantity = 1) => {
+
         setCartItems(prevItems => {
-            const existingItem = prevItems.find(item => item.id === product.id);
+            const existingItem = prevItems.find(item => item.variant_id === variant.id);
 
             if (existingItem) {
                 // إذا المنتج موجود، زيادة الكمية
                 return prevItems.map(item =>
-                    item.id === product.id
+                    item.variant_id === variant.id
                         ? { ...item, quantity: item.quantity + quantity }
                         : item
                 );
             } else {
+                const updatedProduct = {
+                    'id': product.id,
+                    'variant_id': variant.id,
+                    'en_name': product.en_name,
+                    'ar_name': product.ar_name,
+                    'image': variant.image,
+                    'price': variant.sale_price,
+                    'attributes': variant.attributes,
+                    'quantity': quantity,
+
+                };
                 // إذا المنتج غير موجود، إضافته جديد
-                return [...prevItems, { ...product, quantity }];
+                // return [...prevItems, { ...product, quantity }];
+                return [...prevItems, updatedProduct];
+
             }
         });
     };
 
     // إزالة منتج من السلة
-    const removeFromCart = (productId) => {
-        setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
+    const removeFromCart = (variantId) => {
+        setCartItems(prevItems => prevItems.filter(item => item.variant_id !== variantId));
     };
 
     // تحديث كمية منتج
-    const updateQuantity = (productId, quantity) => {
+    const updateQuantity = (variantId, quantity) => {
         if (quantity <= 0) {
             removeFromCart(productId);
         } else {
             setCartItems(prevItems =>
                 prevItems.map(item =>
-                    item.id === productId
+                    item.variant_id === variantId
                         ? { ...item, quantity: quantity }
                         : item
                 )

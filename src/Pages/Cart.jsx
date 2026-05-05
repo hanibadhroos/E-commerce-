@@ -31,7 +31,7 @@ export default function Cart(){
               display: 'inline-block',
               marginTop: '20px'
             }}>
-              Continue Shopping
+              {t("continoue_to_shop")}
             </Link>
           </div>
         );
@@ -40,7 +40,7 @@ export default function Cart(){
 
     return (
         <div style={{ padding: '20px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
-          <h1>Shopping Cart ({getTotalItems()} items)</h1>
+          <h1>{t("shopping_cart")} ({getTotalItems()} {t("items")})</h1>
           
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
             {/* قائمة المنتجات */}
@@ -87,7 +87,7 @@ export default function Cart(){
                           type="number" 
                           min="1" 
                           value={item.quantity}
-                          onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                          onChange={(e) => updateQuantity(item.variant_id, parseInt(e.target.value))}
                           style={{ 
                             width: '60px',
                             padding: '5px',
@@ -103,7 +103,7 @@ export default function Cart(){
                   </div>
                   
                   <button 
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => removeFromCart(item.variant_id)}
                     style={{
                       backgroundColor: '#f44336',
                       color: 'white',
@@ -151,11 +151,11 @@ export default function Cart(){
                   
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '18px' }}>
                     <span>{t("total")}</span>
-                    <span>${(getTotalPrice() * 1.1).toFixed(2)}</span>
+                    <span>${getTotalPrice().toFixed(2)}</span>
                   </div>
                 </div>
                 
-                <button 
+                <Link to="/payment" 
                   style={{
                     backgroundColor: '#4CAF50',
                     color: 'white',
@@ -168,9 +168,10 @@ export default function Cart(){
                     cursor: 'pointer',
                     marginBottom: '10px'
                   }}
+                  className='btn btn-success'
                 >
                   {t("proceed_to_checkout")}
-                </button>
+                </Link>
                 
                 <button 
                   onClick={clearCart}

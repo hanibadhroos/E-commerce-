@@ -23,8 +23,14 @@
     "reviews":"reviews",
     "description":"Description",
     "category":"Category",
-    "buy_now":"Buy Now"
-
-
+    "buy_now":"Buy Now",
+    "register":"Register",
+    "already_have_account":"Already have an account?",
+    "email":"Email",
+    "password":"Password",
+    "attributes":"Attributes",
+    "added_to_cart": "Added to cart successfully",
+    "product_name": "Product Name",
+    "total_price": "Total Price"
 
 }

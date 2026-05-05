@@ -1,19 +1,27 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import ProductComponent from "../components/ProductComponent";
-import { Link } from "react-router-dom";
 import { useSearch } from "../context/SearchContext";
 import { useTranslation } from "react-i18next";
+import api from "../api/axios";
+import { useSelector, useDispatch} from "react-redux";
+import { fetchProducts } from "../features/products/productsSlice";
+
 export default function Home(){
 
     const {t, i18n} = useTranslation();
+    const dispatch = useDispatch();
 
-    const [products, setProducts] = useState([]);
+    // const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("all");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    // const [loading, setLoading] = useState(false);
+    // const [error, setError] = useState(null);
     const [categories, setCategories] = useState([]);
 
+    const {authReady} = useSelector((state)=> state.auth);
+
+    const {items: products, loading, error} = useSelector((state) => state.products);
+    
     const {query} = useSearch();
 
     ////Get categories
@@ -31,33 +39,33 @@ export default function Home(){
         fetchCategories();
     }, []);
 
+    useEffect(() => {
+        if(!authReady) return;
+        dispatch(fetchProducts());
+    }, [dispatch, authReady]);
+
     ////Get products
-    useEffect(()=>{
-        const fetchProducts = async ()=>{
-            setLoading(true);
-            setError(null);
-            try{
-                let apiUrl = "https://fakestoreapi.com/products";
+    // useEffect(()=>{
+    //     if(!authReady) return;
+    //     const fetchProducts = async ()=>{
+    //         setLoading(true);
+    //         setError(null);
+    //         try{
 
-                if(selectedCategory !== "all"){
-                    apiUrl = `https://fakestoreapi.com/products/category/${selectedCategory}`;
-                }
+    //             const response = await api.get('/api/products');
+    //             setProducts(response.data);
+    //         }
+    //         catch(e){
+    //             setError(e.message);
+    //             console.error("Error fetching products:", e);
+    //         }
+    //         finally {
+    //             setLoading(false);
+    //         }
+    //     }
 
-                const response = await axios.get(apiUrl);
-                
-                setProducts(response.data);
-            }
-            catch(e){
-                setError(e.message);
-                console.error("Error fetching products:", e);
-            }
-            finally {
-                setLoading(false);
-            }
-        }
-
-        fetchProducts();
-    },[selectedCategory])
+    //     fetchProducts();
+    // },[selectedCategory, authReady])
 
 
     const categoriesList = categories.map((c)=>{
@@ -68,11 +76,17 @@ export default function Home(){
     })
 
 
-    const filteredProducts = products.filter((product)=>
-        product.title.toLowerCase().includes(query.toLowerCase())
-    )
+    const filteredProducts = useMemo(()=>{
+        return products.filter((product)=>
+            product.ar_name.toLowerCase().includes(query.toLowerCase())
+        );
+    }, [products, query]);
 
-    const featuredProducts = [...filteredProducts].sort((a, b) => b.rating.rate - a.rating.rate);
+    // const filteredProducts = products.filter((product)=>
+    //     product.ar_name.toLowerCase().includes(query.toLowerCase())
+    // )
+
+    // const featuredProducts = [...filteredProducts].sort((a, b) => b.rating.rate - a.rating.rate);
 
     return(
         <div style={{ minHeight:'100vh'}}>
@@ -97,9 +111,9 @@ export default function Home(){
                 </div>
             )}
 
-            <div style={{display:'flex'}} className="content">
+            <div style={{display:'flex', padding: '10px', background:'white'}} className="content">
                 {/* Products  */}
-                <div className="products-container row w-100">
+                <div className="products-container row w-100" style={{margin:'auto'}}>
                 {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                         <ProductComponent key={product.id} product={product}/>
@@ -119,7 +133,7 @@ export default function Home(){
                 </div>
 
                 {/* Featured products */}
-                <div className="categories m-2">
+                {/* <div className="categories m-2">
                     {!loading && !error? (
                             <div>
                                 <ul>
@@ -134,7 +148,7 @@ export default function Home(){
                             </div>
                         )
                     }
-                </div>
+                </div> */}
             </div>
         </div>
     )

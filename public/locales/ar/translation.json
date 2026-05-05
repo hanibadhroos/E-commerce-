@@ -23,6 +23,14 @@
     "reviews":"المراجعات",
     "description":"الوصف",
     "category":"الصنف",
-    "buy_now":"شراء الان"
+    "buy_now":"شراء الان",
+    "register":"انشاء حساب",
+    "already_have_account":"املك حساب سابقا",
+    "email":"البريد الالكتروني",
+    "password":"كلمة المرور",
+    "attributes":"المواصفات",
+    "added_to_cart": "تمت الاضافة الى السلة",
+    "product_name": "اسم المنتج",
+    "total_price": "اجمالي السعر"
 
 }

@@ -4,24 +4,95 @@ import { useFavorites } from '../context/FavoritesContext';
 import { useCart } from '../context/CartContext';
 import { useSearch } from '../context/SearchContext';
 import { useTranslation } from 'react-i18next';
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
+import MyOrders from './MyOrders';
+import { useModal } from '../context/ModalContext';
+import { useSelector } from 'react-redux';
+import Toast from './Toast';
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../features/auth/authSlice";
+
+
 export default function Header() {
   
+  const dispatch = useDispatch();
+
+
   const {favoritesCount} = useFavorites();
 
   const {getTotalItems} = useCart();
+  
+  const { openModal } = useModal();
 
   const [isOpen, setIsOpen] = useState(false);
+  
+  const [showAuth, setShowAuth] = useState(false);
 
   const {query, setQuery} = useSearch();
 
   const {t, i18n} = useTranslation();
 
+  const {user, loading, error, isAuthenticated } = useSelector((state)=> state.auth);
+
+  const authRef = useRef(null);
+
+
   useEffect(() => {
     document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
   }, [i18n.language]);
 
-  
+  const showAuthActions = ()=>{
+    setShowAuth(prev=>!prev);
+  }
+
   const toggleMenue = ()=> setIsOpen(!isOpen);
+
+  // وظائف فتح المودال
+  const handleOpenLogin = () => {
+    openModal(<LoginForm onShowToast={showToast} />, t("login"));
+  };
+
+  const handleOpenRegister = () => {
+    openModal(<RegisterForm onShowToast={showToast} />, t("register"));
+  };
+
+  const handleOpenOrders = () => {
+    openModal(<MyOrders />, t("my_orders"));
+  };
+
+  const handleLogout = async ()=>{
+    const credentials = user.email;
+    await dispatch(logout(credentials)).unwrap();
+
+  }
+
+  const [toasts, setToasts] = useState([]);
+
+  const showToast = (message, type = "success", duration = 3000) => {
+    const id = Date.now(); // معرف فريد
+    setToasts((prev) => [...prev, { id, message, type, duration }]);
+  };
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (authRef.current && !authRef.current.contains(event.target)) {
+        setShowAuth(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
 
   return (
     <header className="bg-black text-white sticky top-0 ">
@@ -35,7 +106,7 @@ export default function Header() {
           <input type="search" placeholder={t("search")} value={query} onChange={(e)=>{setQuery(e.target.value)}}/> 
         </div>
 
-
+    
         <div className='icons-group'>
           
           <select className='btn btn-primary m-2' 
@@ -45,25 +116,45 @@ export default function Header() {
             <option value="en">En</option>
             <option value="ar" >ع</option>
           </select>
+          
+          {isAuthenticated && user && user.role === 'admin'&& (
+            <Link className="btn btn-success m-1" to="/cj-products">
+              Store Products
+            </Link>
+          )
+          }
 
-          <select name="" id="" className='btn btn-info m-2' style={{width:'40px'}}>
-            <option value="">{t("login")}</option>
-            <option value="">{t("my_orders")}</option>
-          </select>
+          <button onClick={showAuthActions}>
+            <i className="fas fa-user-circle"></i>
+            {isAuthenticated ? user?.name : t("login")}
+          </button>
 
+          {showAuth && !isAuthenticated && (
+            <div className="auth-actions" ref={authRef}>
+              <button onClick={handleOpenRegister}>{t("register")}</button>
+              <button onClick={handleOpenLogin}>{t("login")}</button>
+            </div>
+          )}
+
+          {showAuth && isAuthenticated && (
+            <div className="auth-actions" ref={authRef}>
+              <button onClick={handleOpenOrders}>{t("my_orders")}</button>
+              <button onClick={handleLogout}>{t("logout")}</button>
+            </div>
+          )}
 
           <Link to="/cart" className="icon-wrapper">
             <button>
               <i className='fas fa-shopping-cart'></i>
             </button>
-            <span className="cart-count">{getTotalItems()}</span>
+            <span className="cart-count text-white">{getTotalItems()}</span>
           </Link>
 
           <Link to="/favorites" className="icon-wrapper">
             <button>
               <i className='fa-solid fa-heart' style={{color:'red'}}></i>
             </button>
-            <span className="favorites-count">{favoritesCount}</span>
+            <span className="favorites-count text-white">{favoritesCount}</span>
           </Link>
           
         </div>        
@@ -107,7 +198,7 @@ export default function Header() {
             </li>
             <li>
               <Link to="/favorites">
-                <i className='fa-solid fa-heart' style={{color:'red'}}></i>
+                <i className='fa-solid fa-heart' style={{color:'white'}}></i>
               </Link>
             </li>
             <li>
@@ -129,6 +220,18 @@ export default function Header() {
             </li>
           </ul>
       </nav>
+
+      <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
+        {toasts.map((t) => (
+          <Toast
+            key={t.id}
+            message={t.message}
+            type={t.type}
+            duration={t.duration}
+            onClose={() => removeToast(t.id)}
+          />
+        ))}
+      </div>
     </header>
   );
 }
